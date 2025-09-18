@@ -29,6 +29,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/next-app:latest
+          cache: flase 
+
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.2.0
         with:
