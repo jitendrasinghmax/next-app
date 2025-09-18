@@ -28,7 +28,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/next-app:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/next-app:${{github.sha}}
           cache: flase 
 
       - name: Deploy to EC2 via SSH
@@ -38,7 +38,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/myapp:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/next-app:${{github.sha}}
             docker stop myapp || true
             docker rm myapp || true
-            docker run -d --name myapp -p 80:3000 ${{ secrets.DOCKER_USERNAME }}/next-app:latest
+            docker run -d --name myapp -p 80:3000 ${{ secrets.DOCKER_USERNAME }}/next-app:${{github.sha}}
